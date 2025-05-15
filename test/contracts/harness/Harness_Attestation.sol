@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.10;
 
-import {Attestation} from "src/Attestation.sol";
+import {SomniaAttestation} from "src/SomniaAttestation.sol";
 
-contract Harness_Attestation is Attestation {
+contract Harness_Attestation is SomniaAttestation {
     function exposed_baseURI() public view returns(string memory) {
         return _baseURI();
     }
