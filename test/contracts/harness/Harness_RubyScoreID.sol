@@ -4,15 +4,15 @@ pragma solidity ^0.8.10;
 import {RubyScoreID} from "src/RubyScoreID.sol";
 
 contract Harness_RubyScoreID is RubyScoreID {
-    function exposed_baseURI() public view returns(string memory) {
+    function exposed_baseURI() public view returns (string memory) {
         return _baseURI();
     }
 
-    function exposed_composeAttestationAllowanceDigest(address _user, uint256 _nonce) public view returns(bytes32) {
+    function exposed_composeAttestationAllowanceDigest(address _user, uint256 _nonce) public view returns (bytes32) {
         return _composeAttestationAllowanceDigest(_user, _nonce);
     }
 
-    function exposed_getNextAttestationNonce(address _user) public view returns(uint256) {
+    function exposed_getNextAttestationNonce(address _user) public view returns (uint256) {
         return exposed_getNextAttestationNonce(_user);
     }
 

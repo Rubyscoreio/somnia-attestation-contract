@@ -11,7 +11,8 @@ abstract contract Storage_RubyScoreID is Test {
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
     bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
     string public constant TEST_MNEMONIC = "test test test test test test test test test test test junk";
-    bytes32 private constant ATTESTATION_SIGNATURE_STRUCT_HASH = keccak256("AttestationAllowance(address user, uint256 nonce)");
+    bytes32 private constant ATTESTATION_SIGNATURE_STRUCT_HASH =
+        keccak256("AttestationAllowance(address user, uint256 nonce)");
 
     string public baseUri = "baseUri://";
     string public tokenUri = "tokenUri";
@@ -44,7 +45,7 @@ abstract contract Storage_RubyScoreID is Test {
         vm.stopPrank();
     }
 
-    function toComparable(string memory _str) public pure returns(bytes32) {
+    function toComparable(string memory _str) public pure returns (bytes32) {
         return keccak256(abi.encode(_str));
     }
 

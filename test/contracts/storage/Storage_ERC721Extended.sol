@@ -8,7 +8,7 @@ import {Harness_ERC721Extended} from "test/contracts/harness/Harness_ERC721Exten
 abstract contract Storage_ERC721Extended is Test {
     Harness_ERC721Extended public erc721Extended;
 
-    function toComparable(string memory _str) public pure returns(bytes32) {
+    function toComparable(string memory _str) public pure returns (bytes32) {
         return keccak256(abi.encode(_str));
     }
 

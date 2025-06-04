@@ -22,13 +22,17 @@ abstract contract Suite_RubyScoreID is Storage_RubyScoreID {
         vm.assertEq(toComparable(attestationContract.symbol()), toComparable("TST"));
     }
 
-    function test_TokenURI_Ok(address _user, uint256 _tokenId, string calldata _baseUri, string calldata _tokenUri) public {
+    function test_TokenURI_Ok(address _user, uint256 _tokenId, string calldata _baseUri, string calldata _tokenUri)
+        public
+    {
         vm.assume(_user != address(0));
         attestationContract.helper_mint(_user, _tokenId);
         attestationContract.helper_setBaseUri(_baseUri);
         attestationContract.helper_setTokenUri(_tokenUri);
 
-        vm.assertEq(toComparable(attestationContract.tokenURI(_tokenId)), toComparable(string.concat(_baseUri, _tokenUri)));
+        vm.assertEq(
+            toComparable(attestationContract.tokenURI(_tokenId)), toComparable(string.concat(_baseUri, _tokenUri))
+        );
     }
 
     function test_TokenURI_Revert_IfTokenIsNotMinted(uint256 _tokenId) public {
@@ -54,7 +58,12 @@ abstract contract Suite_RubyScoreID is Storage_RubyScoreID {
         attestationContract.safeTransferFrom(_sender, _receiver, _tokenId);
     }
 
-    function test_ExposedSafeTransfer_Revert_Always(address _sender, address _receiver, uint256 _tokenId, bytes calldata _data) public {
+    function test_ExposedSafeTransfer_Revert_Always(
+        address _sender,
+        address _receiver,
+        uint256 _tokenId,
+        bytes calldata _data
+    ) public {
         vm.assume(_sender != address(0));
         vm.assume(_receiver != address(0));
         attestationContract.helper_mint(_sender, _tokenId);
@@ -64,10 +73,20 @@ abstract contract Suite_RubyScoreID is Storage_RubyScoreID {
     }
 
     function test_ComposeNextAttestationAllowanceDigest_Ok(address _user) public {
-        assertEq(attestationContract.composeNextAttestationAllowanceDigest(_user), attestationContract.exposed_composeAttestationAllowanceDigest(_user, attestationContract.attestationNonces(_user) + 1));
+        assertEq(
+            attestationContract.composeNextAttestationAllowanceDigest(_user),
+            attestationContract.exposed_composeAttestationAllowanceDigest(
+                _user, attestationContract.attestationNonces(_user) + 1
+            )
+        );
     }
 
-    function test_SetBaseUri_Ok(string calldata _newBaseUri, address _operator, string calldata _tokenUri, uint256 _tokenId) public {
+    function test_SetBaseUri_Ok(
+        string calldata _newBaseUri,
+        address _operator,
+        string calldata _tokenUri,
+        uint256 _tokenId
+    ) public {
         attestationContract.helper_grantRole(OPERATOR_ROLE, _operator);
         attestationContract.helper_setTokenUri(_tokenUri);
         attestationContract.helper_mint(address(1), _tokenId);
@@ -78,26 +97,34 @@ abstract contract Suite_RubyScoreID is Storage_RubyScoreID {
         vm.prank(_operator);
         attestationContract.setBaseUri(_newBaseUri);
 
-        vm.assertEq(toComparable(attestationContract.tokenURI(_tokenId)), toComparable(string.concat(_newBaseUri, _tokenUri)));
+        vm.assertEq(
+            toComparable(attestationContract.tokenURI(_tokenId)), toComparable(string.concat(_newBaseUri, _tokenUri))
+        );
     }
 
-    function test_SetBaseUri_Revert_IfSenderIsNotAnOwner(string calldata _newBaseUri, address _anonym, string calldata _tokenUri, uint256 _tokenId) public {
+    function test_SetBaseUri_Revert_IfSenderIsNotAnOwner(
+        string calldata _newBaseUri,
+        address _anonym,
+        string calldata _tokenUri,
+        uint256 _tokenId
+    ) public {
         attestationContract.helper_setTokenUri(_tokenUri);
         attestationContract.helper_mint(address(1), _tokenId);
 
         vm.expectRevert(
-            abi.encodeWithSelector(
-                IAccessControl.AccessControlUnauthorizedAccount.selector,
-                _anonym,
-                OPERATOR_ROLE
-            )
+            abi.encodeWithSelector(IAccessControl.AccessControlUnauthorizedAccount.selector, _anonym, OPERATOR_ROLE)
         );
 
         vm.prank(_anonym);
         attestationContract.setBaseUri(_newBaseUri);
     }
 
-    function test_SetTokenUri_Ok(string calldata _newTokenUri, address _operator, string calldata _baseUri, uint256 _tokenId) public {
+    function test_SetTokenUri_Ok(
+        string calldata _newTokenUri,
+        address _operator,
+        string calldata _baseUri,
+        uint256 _tokenId
+    ) public {
         attestationContract.helper_grantRole(OPERATOR_ROLE, _operator);
         attestationContract.helper_setBaseUri(_baseUri);
         attestationContract.helper_mint(address(1), _tokenId);
@@ -108,19 +135,22 @@ abstract contract Suite_RubyScoreID is Storage_RubyScoreID {
         vm.prank(_operator);
         attestationContract.setTokenUri(_newTokenUri);
 
-        vm.assertEq(toComparable(attestationContract.tokenURI(_tokenId)), toComparable(string.concat(_baseUri, _newTokenUri)));
+        vm.assertEq(
+            toComparable(attestationContract.tokenURI(_tokenId)), toComparable(string.concat(_baseUri, _newTokenUri))
+        );
     }
 
-    function test_SetTokenUri_Revert_IfSenderIsNotAnOwner(string calldata _newTokenUri, address _anonym, string calldata _baseUri, uint256 _tokenId) public {
+    function test_SetTokenUri_Revert_IfSenderIsNotAnOwner(
+        string calldata _newTokenUri,
+        address _anonym,
+        string calldata _baseUri,
+        uint256 _tokenId
+    ) public {
         attestationContract.helper_setBaseUri(_baseUri);
         attestationContract.helper_mint(address(1), _tokenId);
 
         vm.expectRevert(
-            abi.encodeWithSelector(
-                IAccessControl.AccessControlUnauthorizedAccount.selector,
-                _anonym,
-                OPERATOR_ROLE
-            )
+            abi.encodeWithSelector(IAccessControl.AccessControlUnauthorizedAccount.selector, _anonym, OPERATOR_ROLE)
         );
 
         vm.prank(_anonym);
@@ -146,11 +176,7 @@ abstract contract Suite_RubyScoreID is Storage_RubyScoreID {
         attestationContract.helper_mint(address(1), _tokenId);
 
         vm.expectRevert(
-            abi.encodeWithSelector(
-                IAccessControl.AccessControlUnauthorizedAccount.selector,
-                _anonym,
-                OPERATOR_ROLE
-            )
+            abi.encodeWithSelector(IAccessControl.AccessControlUnauthorizedAccount.selector, _anonym, OPERATOR_ROLE)
         );
 
         vm.prank(_anonym);
@@ -179,7 +205,7 @@ abstract contract Suite_RubyScoreID is Storage_RubyScoreID {
         vm.expectEmit();
         emit IERC721.Transfer(address(0), _user, expectedTokenId);
 
-        attestationContract.claimAttestation{ value: attestationFee }(_user, signature);
+        attestationContract.claimAttestation{value: attestationFee}(_user, signature);
 
         uint256 balanceCallerAfter = address(this).balance;
         uint256 balanceContractAfter = address(attestationContract).balance;
@@ -205,7 +231,7 @@ abstract contract Suite_RubyScoreID is Storage_RubyScoreID {
         uint256 expectedTokenId = attestationContract.tokenCounter() + 1;
 
         vm.expectRevert(abi.encodeWithSelector(RubyScoreID.InvalidSignature.selector));
-        attestationContract.claimAttestation{ value: attestationFee }(_user, signature);
+        attestationContract.claimAttestation{value: attestationFee}(_user, signature);
 
         uint256 balanceCallerAfter = address(this).balance;
         uint256 balanceContractAfter = address(attestationContract).balance;
@@ -216,7 +242,9 @@ abstract contract Suite_RubyScoreID is Storage_RubyScoreID {
         vm.assertEq(balanceContractAfter, balanceContractBefore);
     }
 
-    function test_ClaimAttestation_Revert_IfSignerIsInvalid(address _user, address _invalidUser, uint32 _operatorIndex) public {
+    function test_ClaimAttestation_Revert_IfSignerIsInvalid(address _user, address _invalidUser, uint32 _operatorIndex)
+        public
+    {
         assumeUnusedAddress(_user);
         assumeUnusedAddress(_invalidUser);
 
@@ -234,7 +262,7 @@ abstract contract Suite_RubyScoreID is Storage_RubyScoreID {
         uint256 expectedTokenId = attestationContract.tokenCounter() + 1;
 
         vm.expectRevert(abi.encodeWithSelector(RubyScoreID.InvalidSignature.selector));
-        attestationContract.claimAttestation{ value: attestationFee }(_invalidUser, signature);
+        attestationContract.claimAttestation{value: attestationFee}(_invalidUser, signature);
 
         uint256 balanceCallerAfter = address(this).balance;
         uint256 balanceContractAfter = address(attestationContract).balance;
@@ -261,11 +289,7 @@ abstract contract Suite_RubyScoreID is Storage_RubyScoreID {
         uint256 balanceCallerBefore = address(this).balance;
         uint256 balanceContractBefore = address(attestationContract).balance;
 
-        vm.expectRevert(abi.encodeWithSelector(
-            RubyScoreID.NotEnoughPayment.selector,
-            0,
-            attestationFee
-        ));
+        vm.expectRevert(abi.encodeWithSelector(RubyScoreID.NotEnoughPayment.selector, 0, attestationFee));
 
         attestationContract.claimAttestation(_user, signature);
 
@@ -298,9 +322,7 @@ abstract contract Suite_RubyScoreID is Storage_RubyScoreID {
 
         vm.expectRevert(
             abi.encodeWithSelector(
-                IAccessControl.AccessControlUnauthorizedAccount.selector,
-                _anonym,
-                DEFAULT_ADMIN_ROLE
+                IAccessControl.AccessControlUnauthorizedAccount.selector, _anonym, DEFAULT_ADMIN_ROLE
             )
         );
 
@@ -308,11 +330,7 @@ abstract contract Suite_RubyScoreID is Storage_RubyScoreID {
         attestationContract.setAttestationFee(_newMintPrice);
     }
 
-    function test_withdraw_Ok_ERC20asset(
-        address _receiver,
-        Asset memory _asset,
-        uint32 _adminIndex
-    ) public {
+    function test_withdraw_Ok_ERC20asset(address _receiver, Asset memory _asset, uint32 _adminIndex) public {
         assumeUnusedAddress(_receiver);
         assumeUnusedAddress(_asset.assetAddress);
 
@@ -338,11 +356,7 @@ abstract contract Suite_RubyScoreID is Storage_RubyScoreID {
         assertEq(receiverBalanceAfter, receiverBalanceBefore + _asset.amount);
     }
 
-    function test_withdraw_Ok_NativeAsset(
-        address _receiver,
-        Asset memory _asset,
-        uint32 _adminIndex
-    ) public {
+    function test_withdraw_Ok_NativeAsset(address _receiver, Asset memory _asset, uint32 _adminIndex) public {
         vm.assume(_receiver != address(attestationContract));
         assumePayable(_receiver);
 
@@ -367,11 +381,7 @@ abstract contract Suite_RubyScoreID is Storage_RubyScoreID {
         assertEq(receiverBalanceAfter, receiverBalanceBefore + _asset.amount);
     }
 
-    function test_withdraw_RevertIf_NotAnAdmin(
-        address _receiver,
-        Asset memory _asset,
-        uint32 _anonymIndex
-    ) public {
+    function test_withdraw_RevertIf_NotAnAdmin(address _receiver, Asset memory _asset, uint32 _anonymIndex) public {
         vm.assume(_receiver != address(attestationContract));
         assumePayable(_receiver);
 
@@ -383,11 +393,7 @@ abstract contract Suite_RubyScoreID is Storage_RubyScoreID {
         uint256 receiverBalanceBefore = address(_receiver).balance;
 
         vm.expectRevert(
-            abi.encodeWithSelector(
-                IAccessControl.AccessControlUnauthorizedAccount.selector,
-                anonym,
-                DEFAULT_ADMIN_ROLE
-            )
+            abi.encodeWithSelector(IAccessControl.AccessControlUnauthorizedAccount.selector, anonym, DEFAULT_ADMIN_ROLE)
         );
 
         vm.prank(anonym);

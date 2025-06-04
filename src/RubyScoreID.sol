@@ -9,13 +9,20 @@ import {ERC721Extended} from "./extensions/ERC721Extended.sol";
 import {EIP712Upgradeable} from "@openzeppelin/upgradeable/5.3.0/utils/cryptography/EIP712Upgradeable.sol";
 import "./WithdrawingModule.sol";
 
-contract RubyScoreID is AccessControlUpgradeable, UUPSUpgradeable, ERC721Extended, EIP712Upgradeable, WithdrawingModule {
+contract RubyScoreID is
+    AccessControlUpgradeable,
+    UUPSUpgradeable,
+    ERC721Extended,
+    EIP712Upgradeable,
+    WithdrawingModule
+{
     using Strings for uint256;
 
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
     string private constant NAME = "RubyScoreID";
     string private constant VERSION = "0.1.0";
-    bytes32 private constant ATTESTATION_SIGNATURE_STRUCT_HASH = keccak256("AttestationAllowance(address user, uint256 nonce)");
+    bytes32 private constant ATTESTATION_SIGNATURE_STRUCT_HASH =
+        keccak256("AttestationAllowance(address user, uint256 nonce)");
 
     uint256 public tokenCounter;
     uint256 public attestationFee;
@@ -34,7 +41,13 @@ contract RubyScoreID is AccessControlUpgradeable, UUPSUpgradeable, ERC721Extende
     error NotEnoughPayment(uint256 received, uint256 expected);
     error AlreadyAttested(address _user);
 
-    function initialize(string calldata _name, string calldata _symbol, address _admin, address _operator, uint256 _attestationFee) public initializer {
+    function initialize(
+        string calldata _name,
+        string calldata _symbol,
+        address _admin,
+        address _operator,
+        uint256 _attestationFee
+    ) public initializer {
         __AccessControl_init();
         __EIP712_init(NAME, VERSION);
         __ERC721Extended_init(_name, _symbol);
@@ -63,7 +76,7 @@ contract RubyScoreID is AccessControlUpgradeable, UUPSUpgradeable, ERC721Extende
         _mint(_user, tokenCounter);
     }
 
-    function composeNextAttestationAllowanceDigest(address _user) public view returns(bytes32 digest) {
+    function composeNextAttestationAllowanceDigest(address _user) public view returns (bytes32 digest) {
         return _composeAttestationAllowanceDigest(_user, _getNextAttestationNonce(_user));
     }
 
@@ -100,9 +113,13 @@ contract RubyScoreID is AccessControlUpgradeable, UUPSUpgradeable, ERC721Extende
         _withdraw(payable(_receiver), _asset);
     }
 
-    function supportsInterface(bytes4 interfaceId) public view override(AccessControlUpgradeable, ERC721Extended) returns(bool) {
-        return AccessControlUpgradeable.supportsInterface(interfaceId)
-            || ERC721Extended.supportsInterface(interfaceId);
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        override(AccessControlUpgradeable, ERC721Extended)
+        returns (bool)
+    {
+        return AccessControlUpgradeable.supportsInterface(interfaceId) || ERC721Extended.supportsInterface(interfaceId);
     }
 
     function _baseURI() internal view override returns (string memory) {
@@ -111,15 +128,15 @@ contract RubyScoreID is AccessControlUpgradeable, UUPSUpgradeable, ERC721Extende
 
     function _authorizeUpgrade(address newImplementation) internal override onlyRole(OPERATOR_ROLE) {}
 
-    function _composeAttestationAllowanceDigest(address _receiver, uint256 _nonce) internal view returns(bytes32 digest) {
-        digest = _hashTypedDataV4(keccak256( abi.encode(
-            ATTESTATION_SIGNATURE_STRUCT_HASH,
-            _receiver,
-            _nonce
-        )));
+    function _composeAttestationAllowanceDigest(address _receiver, uint256 _nonce)
+        internal
+        view
+        returns (bytes32 digest)
+    {
+        digest = _hashTypedDataV4(keccak256(abi.encode(ATTESTATION_SIGNATURE_STRUCT_HASH, _receiver, _nonce)));
     }
 
-    function _getNextAttestationNonce(address _user) internal view returns(uint256) {
+    function _getNextAttestationNonce(address _user) internal view returns (uint256) {
         return attestationNonces[_user] + 1;
     }
 

@@ -45,7 +45,12 @@ abstract contract Suite_ERC721Extended is Storage_ERC721Extended {
         erc721Extended.safeTransferFrom(_sender, _receiver, _tokenId);
     }
 
-    function test_ExposedSafeTransfer_Revert_Always(address _sender, address _receiver, uint256 _tokenId, bytes calldata _data) public {
+    function test_ExposedSafeTransfer_Revert_Always(
+        address _sender,
+        address _receiver,
+        uint256 _tokenId,
+        bytes calldata _data
+    ) public {
         vm.assume(_sender != address(0));
         vm.assume(_receiver != address(0));
         erc721Extended.helper_mint(_sender, _tokenId);
