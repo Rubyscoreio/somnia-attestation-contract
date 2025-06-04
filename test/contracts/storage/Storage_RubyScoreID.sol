@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.10;
 
-import "../harness/Harness_Attestation.sol";
+import "../harness/Harness_RubyScoreID.sol";
 
 import {Mock_ERC20} from "test/contracts/mock/Mock_ERC20.sol";
 import "forge-std/Test.sol";
-import {Harness_Attestation} from "test/contracts/harness/Harness_Attestation.sol";
+import {Harness_RubyScoreID} from "test/contracts/harness/Harness_RubyScoreID.sol";
 
-abstract contract Storage_Attestation is Test {
+abstract contract Storage_RubyScoreID is Test {
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
     bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
     string public constant TEST_MNEMONIC = "test test test test test test test test test test test junk";
@@ -20,7 +20,7 @@ abstract contract Storage_Attestation is Test {
     address public admin = address(1);
     address public operator = address(2);
 
-    Harness_Attestation public attestationContract;
+    Harness_RubyScoreID public attestationContract;
 
     function generateWallet(uint32 _id, string memory _name) public returns (uint256 privateKey, address addr) {
         privateKey = vm.deriveKey(TEST_MNEMONIC, _id);

@@ -9,11 +9,11 @@ import {ERC721Extended} from "./extensions/ERC721Extended.sol";
 import {EIP712Upgradeable} from "@openzeppelin/upgradeable/5.3.0/utils/cryptography/EIP712Upgradeable.sol";
 import "./WithdrawingModule.sol";
 
-contract SomniaAttestation is AccessControlUpgradeable, UUPSUpgradeable, ERC721Extended, EIP712Upgradeable, WithdrawingModule {
+contract RubyScoreID is AccessControlUpgradeable, UUPSUpgradeable, ERC721Extended, EIP712Upgradeable, WithdrawingModule {
     using Strings for uint256;
 
     bytes32 public constant OPERATOR_ROLE = keccak256("OPERATOR_ROLE");
-    string private constant NAME = "Attestation";
+    string private constant NAME = "RubyScoreID";
     string private constant VERSION = "0.1.0";
     bytes32 private constant ATTESTATION_SIGNATURE_STRUCT_HASH = keccak256("AttestationAllowance(address user, uint256 nonce)");
 

@@ -6,12 +6,12 @@ import {IERC721Errors} from "@openzeppelin/5.3.0/interfaces/draft-IERC6093.sol";
 import {IAccessControl} from "@openzeppelin/5.3.0/access/IAccessControl.sol";
 import {IERC721} from "@openzeppelin/5.3.0/token/ERC721/IERC721.sol";
 
-import {SomniaAttestation} from "src/SomniaAttestation.sol";
+import {RubyScoreID} from "src/RubyScoreID.sol";
 import {ERC721Extended} from "src/extensions/ERC721Extended.sol";
-import {Storage_Attestation} from "test/contracts/storage/Storage_Attestation.sol";
+import {Storage_RubyScoreID} from "test/contracts/storage/Storage_RubyScoreID.sol";
 import "src/WithdrawingModule.sol";
 
-abstract contract Suite_Attestation is Storage_Attestation {
+abstract contract Suite_RubyScoreID is Storage_RubyScoreID {
     using Strings for uint256;
 
     function test_Deployment_ERC721Extended(uint256 _tokenId) public {
@@ -73,7 +73,7 @@ abstract contract Suite_Attestation is Storage_Attestation {
         attestationContract.helper_mint(address(1), _tokenId);
 
         vm.expectEmit();
-        emit SomniaAttestation.BaseUriChanged(_newBaseUri);
+        emit RubyScoreID.BaseUriChanged(_newBaseUri);
 
         vm.prank(_operator);
         attestationContract.setBaseUri(_newBaseUri);
@@ -103,7 +103,7 @@ abstract contract Suite_Attestation is Storage_Attestation {
         attestationContract.helper_mint(address(1), _tokenId);
 
         vm.expectEmit();
-        emit SomniaAttestation.TokenUriChanged(_newTokenUri);
+        emit RubyScoreID.TokenUriChanged(_newTokenUri);
 
         vm.prank(_operator);
         attestationContract.setTokenUri(_newTokenUri);
@@ -174,7 +174,7 @@ abstract contract Suite_Attestation is Storage_Attestation {
         uint256 balanceContractBefore = address(attestationContract).balance;
 
         vm.expectEmit();
-        emit SomniaAttestation.Attested(_user, expectedTokenId);
+        emit RubyScoreID.Attested(_user, expectedTokenId);
 
         vm.expectEmit();
         emit IERC721.Transfer(address(0), _user, expectedTokenId);
@@ -204,7 +204,7 @@ abstract contract Suite_Attestation is Storage_Attestation {
 
         uint256 expectedTokenId = attestationContract.tokenCounter() + 1;
 
-        vm.expectRevert(abi.encodeWithSelector(SomniaAttestation.InvalidSignature.selector));
+        vm.expectRevert(abi.encodeWithSelector(RubyScoreID.InvalidSignature.selector));
         attestationContract.claimAttestation{ value: attestationFee }(_user, signature);
 
         uint256 balanceCallerAfter = address(this).balance;
@@ -233,7 +233,7 @@ abstract contract Suite_Attestation is Storage_Attestation {
 
         uint256 expectedTokenId = attestationContract.tokenCounter() + 1;
 
-        vm.expectRevert(abi.encodeWithSelector(SomniaAttestation.InvalidSignature.selector));
+        vm.expectRevert(abi.encodeWithSelector(RubyScoreID.InvalidSignature.selector));
         attestationContract.claimAttestation{ value: attestationFee }(_invalidUser, signature);
 
         uint256 balanceCallerAfter = address(this).balance;
@@ -262,7 +262,7 @@ abstract contract Suite_Attestation is Storage_Attestation {
         uint256 balanceContractBefore = address(attestationContract).balance;
 
         vm.expectRevert(abi.encodeWithSelector(
-            SomniaAttestation.NotEnoughPayment.selector,
+            RubyScoreID.NotEnoughPayment.selector,
             0,
             attestationFee
         ));
@@ -284,7 +284,7 @@ abstract contract Suite_Attestation is Storage_Attestation {
         attestationContract.helper_grantRole(DEFAULT_ADMIN_ROLE, _admin);
 
         vm.expectEmit();
-        emit SomniaAttestation.AttestationFeeChanged(_newAttestationPrice);
+        emit RubyScoreID.AttestationFeeChanged(_newAttestationPrice);
 
         vm.prank(admin);
         attestationContract.setAttestationFee(_newAttestationPrice);

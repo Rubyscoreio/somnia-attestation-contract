@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.10;
 
-import {SomniaAttestation} from "src/SomniaAttestation.sol";
+import {RubyScoreID} from "src/RubyScoreID.sol";
 
-contract Harness_Attestation is SomniaAttestation {
+contract Harness_RubyScoreID is RubyScoreID {
     function exposed_baseURI() public view returns(string memory) {
         return _baseURI();
     }
