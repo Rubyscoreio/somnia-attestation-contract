@@ -8,11 +8,11 @@ import {RubyScoreID} from "../src/RubyScoreID.sol";
 contract DeployRubyScoreIDScript is Script {
     address public constant operator = 0x381c031bAA5995D0Cc52386508050Ac947780815;
     address public constant admin = 0x0d0D5Ff3cFeF8B7B2b1cAC6B6C27Fd0846c09361;
-    RubyScoreID public constant proxy = RubyScoreID(address(0));
+    RubyScoreID public constant proxy = RubyScoreID(0xEbAF3b0Cb5ccCCA072F2B01C797F4e9d1aE948e4);
     string public constant name = "RubyScoreID";
     string public constant symbol = "RubyScoreID";
     string public constant baseUri = "ipfs://";
-    uint256 public constant attestationFee = 1e9;
+    uint256 public constant attestationFee = 2_000_000_000_000_000;
 
     function runTestnet() public {
         vm.createSelectFork("baseSepolia");
