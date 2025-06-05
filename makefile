@@ -7,7 +7,7 @@ test:
 	forge test --via-ir
 
 deployTestnet:
-	forge script script/DeployAttestation.s.sol:DeployAttestationScript \
+	forge script script/DeployRubyScoreID.s.sol:DeployRubyScoreIDScript \
 	--sig "runTestnet()" \
 	-vvvv \
 	--etherscan-api-key ${BASESCAN_API_KEY} \
@@ -15,7 +15,7 @@ deployTestnet:
 # 	--broadcast
 
 deployMainnet:
-	forge script script/DeployAttestation.s.sol:DeployAttestationScript \
+	forge script script/DeployRubyScoreID.s.sol:DeployRubyScoreIDScript \
 	--sig "runMainnet()" \
 	-vvvv \
 	--etherscan-api-key ${BASESCAN_API_KEY} \
@@ -23,7 +23,7 @@ deployMainnet:
 # 	--broadcast
 
 updateMainnet:
-	forge script script/DeployAttestation.s.sol:DeployAttestationScript \
+	forge script script/DeployRubyScoreID.s.sol:DeployRubyScoreIDScript \
 	--sig "updateMainnet()" \
 	-vvvv \
 	--etherscan-api-key ${BASESCAN_API_KEY} \
