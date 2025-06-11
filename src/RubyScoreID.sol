@@ -109,6 +109,10 @@ contract RubyScoreID is
         _burn(tokenId);
     }
 
+    function name() view public override returns(string memory) {
+        return "RubyScore ID Somnia";
+    }
+
     function withdraw(address _receiver, Asset calldata _asset) external onlyRole(DEFAULT_ADMIN_ROLE) {
         _withdraw(payable(_receiver), _asset);
     }

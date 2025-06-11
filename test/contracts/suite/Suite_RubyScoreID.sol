@@ -18,7 +18,7 @@ abstract contract Suite_RubyScoreID is Storage_RubyScoreID {
         vm.assertTrue(attestationContract.hasRole(DEFAULT_ADMIN_ROLE, admin));
         vm.assertTrue(attestationContract.hasRole(OPERATOR_ROLE, operator));
         vm.assertEq(attestationContract.attestationFee(), attestationFee);
-        vm.assertEq(toComparable(attestationContract.name()), toComparable("Test"));
+        vm.assertEq(toComparable(attestationContract.name()), toComparable("RubyScore ID Somnia"));
         vm.assertEq(toComparable(attestationContract.symbol()), toComparable("TST"));
     }
 
